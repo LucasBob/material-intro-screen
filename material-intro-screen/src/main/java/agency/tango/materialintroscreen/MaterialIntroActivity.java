@@ -203,7 +203,18 @@ public abstract class MaterialIntroActivity extends AppCompatActivity {
             nextButton.setOnClickListener(permissionNotGrantedClickListener);
         } else if (adapter.isLastSlide(position)) {
             nextButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_finish));
-            nextButton.setOnClickListener(finishScreenClickListener);
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fragment.canMoveFurther() == false) {
+                        nextButtonTranslationWrapper.error();
+                        showError(fragment.cantMoveFurtherErrorMessage());
+                    } else {
+                        onFinish();
+                        finish();
+                    }
+                }
+            });
         } else {
             nextButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_next));
             nextButton.setOnClickListener(new View.OnClickListener() {
